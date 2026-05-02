@@ -1,3 +1,5 @@
+const log = require('../logging_middleware/logger');
+
 const axios = require('axios');
 
 const API_URL = "http://20.207.122.201/evaluation-service/notifications";
@@ -24,10 +26,12 @@ let notifications = res.data.notifications;
 ```
 notifications.sort((a, b) => getPriority(b) - getPriority(a));
 
+
 const top10 = notifications.slice(0, 10);
 
 console.log(top10);
 ```
+log("Fetching notifications");
 
 }
 

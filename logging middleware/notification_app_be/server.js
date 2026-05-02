@@ -1,16 +1,34 @@
-const express = require('express');
-const logger = require('../logging_middleware/logger');
+const axios = require('axios');
 
-const app = express();
-app.use(express.json());
-app.use(logger);
+const API_URL = "http://20.207.122.201/evaluation-service/notifications";
 
-app.get('/', (req, res) => {
-res.send('Backend running');
-});
+function getPriority(n) {
+let weight = 0;
 
-app.post('/notify', (req, res) => {
-res.json({ message: req.body.message });
-});
+```
+if (n.Type === "Placement") weight += 3;
+else if (n.Type === "Result") weight += 2;
+else weight += 1;
 
-app.listen(3000);
+weight += new Date(n.Timestamp).getTime() / 1000000000000;
+
+return weight;
+```
+
+}
+
+async function main() {
+const res = await axios.get(API_URL);
+let notifications = res.data.notifications;
+
+```
+notifications.sort((a, b) => getPriority(b) - getPriority(a));
+
+const top10 = notifications.slice(0, 10);
+
+console.log(top10);
+```
+
+}
+
+main();

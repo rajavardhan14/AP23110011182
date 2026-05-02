@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Notification App</title>
+</head>
+<body>
+    <h2>Send Notification</h2>
+    <input id="msg" placeholder="Enter message" />
+    <button onclick="sendNotification()">Send</button>
+
+```
+<p id="result"></p>
+
+<script>
+    async function sendNotification() {
+        const message = document.getElementById('msg').value;
+
+        const res = await fetch('http://localhost:3000/notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message })
+        });
+
+        const data = await res.json();
+        document.getElementById('result').innerText = data.status;
+    }
+</script>
+```
+
+</body>
+</html>

@@ -3,10 +3,6 @@ const path = require('path');
 
 const logFile = path.join(__dirname, 'logs.txt');
 
-const logger = (req, res, next) => {
-const log = `${new Date().toISOString()} | ${req.method} | ${req.url}\n`;
-fs.appendFile(logFile, log, () => {});
-next();
+module.exports = function log(message) {
+fs.appendFile(logFile, message + "\n", () => {});
 };
-
-module.exports = logger;
